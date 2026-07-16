@@ -1,0 +1,29 @@
+flowchart TB
+    subgraph devices[" "]
+      direction LR
+      Phone["📱 Phone<br/>(browser)"]
+      Laptop["💻 Laptop<br/>(browser)"]
+    end
+
+    User(["👤 User<br/>(me + a few friends)"])
+    Penelope["<b>Penelope The Fileer</b><br/>static single-page app<br/>(JS · HTML · CSS)"]
+
+    subgraph supabase["Supabase (free tier)"]
+      direction LR
+      DB[("Postgres<br/>items table")]
+      Store[["Storage<br/>file bytes"]]
+      Edge{{"Edge Function<br/>+ pg_cron<br/>(scheduled purge)"}}
+    end
+
+    Host[["GitHub Pages<br/>(static hosting)"]]
+
+    User --> Phone
+    User --> Laptop
+    Phone -->|"loads app from"| Host
+    Laptop -->|"loads app from"| Host
+    Phone <-->|"read / write items<br/>scoped by room code"| Penelope
+    Laptop <-->|"read / write items<br/>scoped by room code"| Penelope
+    Penelope <-->|"SQL via client SDK"| DB
+    Penelope <-->|"upload / download / delete"| Store
+    Edge -->|"delete expired rows"| DB
+    Edge -->|"delete expired objects"| Store

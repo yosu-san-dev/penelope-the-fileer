@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant UI
+    participant DB as db.js (Items)
+    participant SB as Supabase Realtime
+    UI->>DB: subscribeItems(onChange)
+    DB->>SB: channel('items').on(postgres_changes, filter: code=eq.CODE)
+    Note over SB: INSERT / UPDATE / DELETE on items (this code)
+    SB-->>DB: change event
+    DB-->>UI: onChange(newItemSet)  -> re-render list/grid

@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    participant Cron as pg_cron (schedule)
+    participant Edge as Edge Function
+    participant DB as Postgres (items)
+    participant Store as Supabase Storage
+    participant UI as Any device on load
+
+    Cron->>Edge: trigger (e.g. hourly)
+    Edge->>DB: select items where expires_at < now()
+    DB-->>Edge: expired rows
+    Edge->>Store: delete each expired object
+    Edge->>DB: delete expired rows
+    Note over Cron,Store: server-side guarantee — reclaims storage even if nobody visits
+
+    UI->>DB: on load, select own items where expires_at < now()
+    DB-->>UI: expired rows (if any)
+    UI->>Store: delete objects
+    UI->>DB: delete rows
+    Note over UI: client-side sweep — instant cleanup; UI also hides anything past expires_at

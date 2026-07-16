@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor U as User
+    participant P as Phone (has code)
+    participant L as Laptop (new visit)
+    participant LS as localStorage
+    participant DB as Supabase
+
+    Note over P: already has code "PEN1LOPE"
+    U->>L: open the site
+    L->>LS: read room code
+    LS-->>L: none found
+    L->>L: generate 8-char code, but...
+    U->>L: type the phone's code "PEN1LOPE"
+    L->>LS: save "PEN1LOPE"
+    L->>DB: query items where code = "PEN1LOPE"
+    DB-->>L: the shared stream
+    Note over P,L: both devices now read/write the same items

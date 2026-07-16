@@ -1,0 +1,15 @@
+erDiagram
+    ITEMS {
+      uuid id PK
+      text code "room code, ^[A-Z0-9]{8}$"
+      text type "text | file"
+      text title
+      text content "note body"
+      text path "storage path (file)"
+      text file_url
+      text file_name
+      bigint file_size
+      text mime_type
+      timestamptz created_at
+      timestamptz expires_at "created_at + 24h"
+    }

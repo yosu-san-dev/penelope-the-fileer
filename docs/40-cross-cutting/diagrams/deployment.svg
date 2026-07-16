@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#495057"/></marker>
+  </defs>
+  <rect x="0" y="0" width="720" height="360" fill="#f7f8fa"/>
+  <text x="360" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1b1f24">Deployment shape</text>
+
+  <!-- Repo -->
+  <rect x="40" y="52" width="160" height="52" rx="9" fill="#ffffff" stroke="#adb5bd" stroke-width="2"/>
+  <text x="120" y="83" text-anchor="middle" font-size="12.5" fill="#343a40">Repo (private)</text>
+
+  <!-- Static site -->
+  <rect x="270" y="120" width="185" height="66" rx="10" fill="#ece9fd" stroke="#6c5ce7" stroke-width="2"/>
+  <text x="362" y="147" text-anchor="middle" font-size="12.5" font-weight="700" fill="#362b6b">Static site</text>
+  <text x="362" y="165" text-anchor="middle" font-size="11" fill="#4b3f8a">index.html + js/css</text>
+
+  <!-- User -->
+  <ellipse cx="95" cy="250" rx="72" ry="42" fill="#e7f0fe" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="95" y="246" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1b3a5b">Phone /</text>
+  <text x="95" y="263" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1b3a5b">Laptop</text>
+
+  <!-- Supabase -->
+  <rect x="525" y="112" width="165" height="80" rx="10" fill="#eafaf1" stroke="#2f9e6f" stroke-width="2"/>
+  <text x="607" y="145" text-anchor="middle" font-size="13" font-weight="700" fill="#177d54">Supabase</text>
+  <text x="607" y="164" text-anchor="middle" font-size="11" fill="#2f6b4b">Postgres + Storage</text>
+
+  <!-- pg_cron + edge -->
+  <rect x="250" y="286" width="120" height="46" rx="9" fill="#f4fbf7" stroke="#2f9e6f" stroke-width="2"/>
+  <text x="310" y="314" text-anchor="middle" font-size="12" fill="#14532d">pg_cron</text>
+  <rect x="420" y="286" width="165" height="46" rx="9" fill="#d7f5e7" stroke="#2f9e6f" stroke-width="2"/>
+  <text x="502" y="308" text-anchor="middle" font-size="11.5" font-weight="600" fill="#14532d">Edge Function</text>
+  <text x="502" y="323" text-anchor="middle" font-size="10.5" fill="#2f6b4b">purge-expired</text>
+
+  <!-- arrows -->
+  <path d="M150,104 C210,120 240,130 268,138" fill="none" stroke="#495057" stroke-width="1.7" marker-end="url(#ah)"/>
+  <text x="205" y="120" font-size="10.5" fill="#495057">GitHub Pages</text>
+
+  <path d="M150,232 C210,205 240,188 268,176" fill="none" stroke="#495057" stroke-width="1.7" marker-end="url(#ah)"/>
+
+  <line x1="455" y1="152" x2="523" y2="152" stroke="#495057" stroke-width="1.7" marker-end="url(#ah)"/>
+  <text x="490" y="144" text-anchor="middle" font-size="10" fill="#495057">anon key +</text>
+  <text x="490" y="200" text-anchor="middle" font-size="10" fill="#495057">x-room-code</text>
+
+  <line x1="370" y1="309" x2="418" y2="309" stroke="#495057" stroke-width="1.7" marker-end="url(#ah)"/>
+  <path d="M585,300 C620,290 620,240 607,194" fill="none" stroke="#2f9e6f" stroke-width="1.7" marker-end="url(#ah)"/>
+  <text x="628" y="250" font-size="10" fill="#177d54">purge</text>
+</svg>

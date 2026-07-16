@@ -1,0 +1,43 @@
+flowchart TB
+    subgraph browser["Browser — Penelope SPA (client-side only)"]
+      direction TB
+
+      subgraph ui["Presentation layer"]
+        Shell["App shell<br/>(layout, toolbar)"]
+        Views["Views<br/>(list / grid)"]
+        Cards["Item cards<br/>(note / file)"]
+        Panels["Editor panel + Uploader"]
+        Code["Room-code widget"]
+        Timer["Countdown (per second)"]
+      end
+
+      subgraph domain["Domain / services layer"]
+        Auth["Auth service<br/>(room code)"]
+        Items["Items service<br/>(create / list / update / delete)"]
+        Upload["Upload service<br/>(files)"]
+        Expiry["Expiry service<br/>(sweep + filter)"]
+        SortFilter["Sort / filter"]
+      end
+
+      subgraph client["Data-access layer"]
+        SDK["Supabase JS client<br/>(anon key)"]
+        LocalS["localStorage<br/>(room code only)"]
+      end
+    end
+
+    subgraph backend["Supabase (managed — no server of mine)"]
+      DB[("Postgres · items")]
+      Store[["Storage · files"]]
+      RLS["Row-Level Security"]
+      Cron{{"pg_cron + Edge Function<br/>(scheduled purge)"}}
+    end
+
+    ui --> domain
+    domain --> client
+    Auth --> LocalS
+    SDK -->|"SQL"| DB
+    SDK -->|"objects"| Store
+    DB --- RLS
+    Store --- RLS
+    Cron --> DB
+    Cron --> Store

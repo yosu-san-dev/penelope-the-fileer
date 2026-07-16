@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 452" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="480" height="452" fill="#f7f8fa"/>
+  <text x="240" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1b1f24">items (table)</text>
+
+  <rect x="40" y="44" width="400" height="392" rx="10" fill="#ffffff" stroke="#2f9e6f" stroke-width="2"/>
+  <rect x="40" y="44" width="400" height="34" rx="10" fill="#d7f5e7" stroke="#2f9e6f" stroke-width="2"/>
+  <rect x="40" y="66" width="400" height="12" fill="#d7f5e7"/>
+  <text x="60" y="66" font-size="13" font-weight="700" fill="#14532d">public.items</text>
+
+  <g font-size="12" fill="#1b1f24">
+    <!-- rows -->
+    <g>
+      <rect x="41" y="80"  width="398" height="29" fill="#f4fbf7"/>
+      <rect x="41" y="138" width="398" height="29" fill="#f4fbf7"/>
+      <rect x="41" y="196" width="398" height="29" fill="#f4fbf7"/>
+      <rect x="41" y="254" width="398" height="29" fill="#f4fbf7"/>
+      <rect x="41" y="312" width="398" height="29" fill="#f4fbf7"/>
+      <rect x="41" y="370" width="398" height="29" fill="#f4fbf7"/>
+    </g>
+    <g font-weight="600">
+      <text x="60" y="99">id</text>
+      <text x="60" y="128">code</text>
+      <text x="60" y="157">type</text>
+      <text x="60" y="186">title</text>
+      <text x="60" y="215">content</text>
+      <text x="60" y="244">path</text>
+      <text x="60" y="273">file_url</text>
+      <text x="60" y="302">file_name</text>
+      <text x="60" y="331">file_size</text>
+      <text x="60" y="360">mime_type</text>
+      <text x="60" y="389">created_at</text>
+      <text x="60" y="418">expires_at</text>
+    </g>
+    <g fill="#5b6470" font-size="11">
+      <text x="200" y="99">uuid · PK</text>
+      <text x="200" y="128">text · ^[A-Z0-9]{8}$</text>
+      <text x="200" y="157">text · text | file</text>
+      <text x="200" y="186">text</text>
+      <text x="200" y="215">text · note body</text>
+      <text x="200" y="244">text · file object path</text>
+      <text x="200" y="273">text · cached signed URL</text>
+      <text x="200" y="302">text</text>
+      <text x="200" y="331">bigint · bytes</text>
+      <text x="200" y="360">text</text>
+      <text x="200" y="389">timestamptz · now()</text>
+      <text x="200" y="418">timestamptz · +24h</text>
+    </g>
+  </g>
+</svg>

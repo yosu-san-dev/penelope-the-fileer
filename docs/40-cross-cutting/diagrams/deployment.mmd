@@ -1,0 +1,5 @@
+flowchart LR
+    Dev["Repo (private)"] -->|GitHub Pages| CDN["Static site<br/>(index.html + js/css)"]
+    User(["Phone / Laptop"]) --> CDN
+    CDN -->|"anon key + x-room-code"| SB["Supabase<br/>Postgres + Storage"]
+    Cron["pg_cron"] --> Edge["Edge Function<br/>purge-expired"] --> SB

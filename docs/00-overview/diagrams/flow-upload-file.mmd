@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor U as User
+    participant UI as Uploader (drop / picker)
+    participant Up as Upload service
+    participant Store as Supabase Storage
+    participant Items as Items service
+    participant DB as Postgres (items)
+
+    U->>UI: drop file / choose file
+    UI->>Up: uploadFile(file)
+    Up->>Store: put bytes at <code>/<id>-<name>
+    Store-->>Up: object path / public URL
+    Up->>Items: create row {type:'file', title, file_url, file_name, file_size, mime_type, timestamps}
+    Items->>DB: INSERT (RLS checks code)
+    DB-->>Items: new row
+    Note over UI,DB: realtime pushes the row → file appears in the list like a note

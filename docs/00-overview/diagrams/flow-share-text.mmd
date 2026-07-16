@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor U as User
+    participant UI as UI (text area)
+    participant Items as Items service
+    participant SDK as Supabase client
+    participant DB as Postgres (items)
+
+    U->>UI: paste text, click "Share"
+    UI->>Items: shareText(title, body)
+    Items->>Items: set created_at = now, expires_at = now + 24h
+    Items->>SDK: insert row {code, type:'text', title, content, timestamps}
+    SDK->>DB: INSERT (RLS checks code)
+    DB-->>SDK: new row
+    SDK-->>Items: ok
+    Note over UI,DB: realtime subscription pushes the new row → UI re-renders the list

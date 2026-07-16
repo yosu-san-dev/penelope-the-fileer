@@ -1,0 +1,8 @@
+flowchart TD
+    A([App loads]) --> B{code in localStorage?}
+    B -- yes --> C[use existing code]
+    B -- no --> D[generateRoomCode - 8 chars]
+    D --> E[save to localStorage]
+    E --> F
+    C --> F[scope Supabase client + all queries to code]
+    F --> G([app ready])

@@ -1,0 +1,149 @@
+<!doctype html>
+<!--
+  index.html  —  Penelope The Fileer: App Shell
+  ---------------------------------------------------------------------------
+  A lightweight, fully client-side web app for moving text and files between
+  devices via an 8-character room code. Every item auto-expires after 24 hours.
+
+  Related docs: docs/00-overview/architecture.md
+                docs/10-subsystems/ui-shell-and-views.md
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Penelope The Fileer</title>
+    <meta name="description" content="Quickly move text snippets and files between your phone and laptop. No accounts, no sign-up — just an 8-character room code. Everything auto-expires in 24 hours." />
+
+    <!-- TODO(security): In production, configure CSP via HTTP headers on your hosting platform.
+         For GitHub Pages, use a <meta> tag as a baseline (cannot set all directives).
+         The CDN URL below (esm.sh) must be included in script-src. -->
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+
+      <!-- ═══ Header ═══════════════════════════════════════════════════ -->
+      <header class="app-header" id="app-header">
+        <div class="app-logo">
+          <div class="app-logo-icon">📎</div>
+          <h1 class="app-logo-text">Penelope</h1>
+        </div>
+
+        <!-- Room-code widget -->
+        <div class="room-code-widget" id="room-code-widget">
+          <span class="room-code-label">Room</span>
+          <span class="room-code-display" id="room-code-display"></span>
+          <button class="btn btn-ghost btn-sm" id="room-code-copy-btn" title="Copy code">📋</button>
+          <button class="btn btn-ghost btn-sm" id="room-code-edit-btn" title="Edit code">✏️</button>
+        </div>
+
+        <!-- Room-code edit mode (hidden by default) -->
+        <div class="room-code-widget" id="room-code-edit-widget" style="display:none;">
+          <span class="room-code-label">Room</span>
+          <input class="room-code-input" id="room-code-input" type="text" maxlength="8" placeholder="CODE1234" autocomplete="off" spellcheck="false" />
+          <button class="btn btn-primary btn-sm" id="room-code-save-btn">Save</button>
+          <button class="btn btn-ghost btn-sm" id="room-code-cancel-btn">Cancel</button>
+        </div>
+      </header>
+
+      <!-- localStorage warning (shown only if unavailable) -->
+      <div class="storage-warning" id="storage-warning" style="display:none;">
+        ⚠️ localStorage is unavailable — your room code will not persist across sessions.
+      </div>
+
+      <!-- ═══ Composer ═════════════════════════════════════════════════ -->
+      <section class="composer" id="composer">
+        <div class="composer-row">
+          <input class="composer-title" id="composer-title" type="text" placeholder="Title (optional)" autocomplete="off" />
+        </div>
+        <textarea class="composer-body" id="composer-body" placeholder="Paste text or a link here…"></textarea>
+        <div class="composer-actions">
+          <div class="composer-left">
+            <!-- Uploader -->
+            <div class="uploader" id="uploader">
+              <label class="uploader-drop-zone" id="uploader-drop-zone" tabindex="0" role="button">
+                <span>📁</span>
+                <span>Drop file or click</span>
+                <input class="uploader-input" id="uploader-input" type="file" multiple />
+              </label>
+              <div class="uploader-progress" id="uploader-progress" style="display:none;"></div>
+              <div class="uploader-staged-files" id="uploader-staged-files"></div>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="share-btn" disabled>
+            <span>Share</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ═══ Toolbar ══════════════════════════════════════════════════ -->
+      <div class="toolbar" id="toolbar">
+        <div class="toolbar-top" style="display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap; gap: var(--space-3);">
+          <div class="toolbar-group">
+            <span class="toolbar-label">Sort</span>
+            <select id="sort-combined-select">
+              <option value="date-desc">Newest</option>
+              <option value="date-asc">Oldest</option>
+              <option value="alpha-asc">A-Z</option>
+              <option value="alpha-desc">Z-A</option>
+            </select>
+            <span class="toolbar-label" style="margin-left: 0.5rem;">Filter</span>
+            <select id="type-filter-select">
+              <option value="all">All</option>
+              <option value="text">Text</option>
+              <option value="file">File</option>
+            </select>
+          </div>
+          <div class="toolbar-group view-toggle-group">
+            <div class="view-toggle" id="view-toggle">
+              <button class="view-toggle-btn active" id="view-list-btn" title="List view">☰</button>
+              <button class="view-toggle-btn" id="view-grid-btn" title="Grid view">▦</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-bottom" style="width: 100%; margin-top: var(--space-3);">
+          <input type="text" id="search-input" class="composer-title" style="width: 100%;" placeholder="Search files and notes..." autocomplete="off" />
+        </div>
+      </div>
+
+      <!-- ═══ Items container ══════════════════════════════════════════ -->
+      <main id="items-container">
+        <div class="loading-state" id="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Loading items…</p>
+        </div>
+      </main>
+
+    </div>
+
+    <!-- ═══ Editor Panel (slide-over) ════════════════════════════════════ -->
+    <div class="editor-overlay" id="editor-overlay"></div>
+    <aside class="editor-panel" id="editor-panel">
+      <div class="editor-header">
+        <input class="editor-title-input" id="editor-title" type="text" placeholder="Note title" />
+        <span class="editor-countdown" id="editor-countdown"></span>
+        <button class="btn btn-ghost btn-icon" id="editor-close-btn" title="Close">✕</button>
+      </div>
+      <div class="editor-body">
+        <textarea id="editor-content" placeholder="Note content…"></textarea>
+      </div>
+      <div class="editor-footer">
+        <div class="editor-footer-left">
+          <button class="btn btn-primary" id="editor-save-btn">Save</button>
+          <button class="btn btn-ghost" id="editor-cancel-btn">Cancel</button>
+        </div>
+        <button class="btn btn-danger" id="editor-delete-btn">Delete</button>
+      </div>
+    </aside>
+
+    <!-- ═══ Toast container ════════════════════════════════════════════ -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ═══ App entry point ════════════════════════════════════════════ -->
+    <!-- config: copy config/supabase-config.example.js -> config/supabase-config.js -->
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
