@@ -20,7 +20,7 @@ Everything lives in **Supabase** (a Postgres row per item; file bytes in Supabas
 
 ## Setup & Deployment
 
-Since Penelope is 100% client-side, you only need to host the static files in the `src/` directory. However, you must set up a Supabase project to provide the database and storage.
+Since Penelope is 100% client-side, you only need to host the static files in the root directory. However, you must set up a Supabase project to provide the database and storage.
 
 ### 1. Supabase Setup
 1. Create a new project at [Supabase](https://supabase.com/).
@@ -30,9 +30,9 @@ Since Penelope is 100% client-side, you only need to host the static files in th
 3. (Optional) Deploy the Edge Function in `supabase/functions/purge-expired` to handle the background deletion of expired items. 
 
 ### 2. Configure the App
-1. Make sure `src/config/supabase-config.js` exists.
+1. Make sure `config/supabase-config.js` exists (you can copy `supabase-config.example.js` if needed).
 2. Update the `SUPABASE_URL` and `SUPABASE_ANON_KEY` inside it with your project's credentials (found in Supabase Project Settings > API).
 
 ### 3. Run Locally or Deploy
-- To test locally, simply serve the `src/` directory using any local web server (e.g., `npx serve src`).
-- To deploy, host the `src/` directory on GitHub Pages, Vercel, Netlify, or any other static hosting provider.
+- To test locally, simply serve the root directory using any local web server (e.g., `npx serve .`).
+- To deploy, host the root directory on GitHub Pages, Vercel, Netlify, or any other static hosting provider.
